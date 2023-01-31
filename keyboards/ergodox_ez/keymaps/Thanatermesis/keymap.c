@@ -5,6 +5,7 @@ enum layers {
     BASE,  // default layer
     SYMB,  // symbols
     MDIA,  // media keys
+    SPECIAL, // special layer (combos)
 };
 
 enum custom_keycodes {
@@ -14,9 +15,45 @@ enum custom_keycodes {
     VRSN = SAFE_RANGE,
 #endif
     EPRM,
-    SHELL_LS,
-    SHELL_LSB,
+    EMOT_think,
+    EMOT_eyes,
+    EMOT_tongue,
+    EMOT_monkm,
+    EMOT_monke,
+    EMOT_rofl1,
+    EMOT_rofl2,
+    EMOT_sung,
+    EMOT_fire,
+    EMOT_love,
+    bs_multi,
+    lc_all_c,
+    bash_devnull1,
+    bash_devnull2,
+    bash_devnull12,
+    signature_niceday,
+    donation_thx_important,
+    signature_name,
+    signature_email,
+    signature_thankyou,
+    signature_thx_support,
+    website_elivecd,
+    website_64bit_download,
+    gui_selectline,
+    arrowLm,
+    arrowRm,
+    arrowUm,
+    arrowDm,
 };
+
+/*
+Tap dance modes
+enum {
+    TD_LSHIFT,
+    TD_RSHIFT,
+};
+*/
+
+int repeat_amount = 5;
 
 // needed to enable utf8/unicode, even if not used
 const uint32_t PROGMEM unicode_map[] = {
@@ -33,6 +70,13 @@ const uint32_t PROGMEM unicode_map[] = {
 
 // A 'blocking' key code. Does nothing but prevent falling back to another layer.
 #define XXX KC_NO
+
+#define LED_BRIGHTNESS_LO       15
+#define LED_BRIGHTNESS_MED1     30
+#define LED_BRIGHTNESS_MED2     60
+#define LED_BRIGHTNESS_MED3     100
+#define LED_BRIGHTNESS_HI       255
+
 
 
 // clang-format off
@@ -60,14 +104,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [BASE] = LAYOUT_ergodox_pretty(
   // left hand
-  KC_EQL,          SHELL_LS,        SHELL_LSB,          KC_3,    KC_4,    KC_5,    KC_LEFT,              KC_RGHT,      KC_6,    KC_7,    KC_8,    KC_9,              KC_0,           KC_MINS,
-  KC_DEL,          KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    TG(SYMB),             TG(SYMB),     KC_Y,    KC_U,    KC_I,    KC_O,              KC_P,           KC_BSLS,
-  KC_BSPC,         KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                                        KC_H,    KC_J,    KC_K,    KC_L,    LT(MDIA, KC_SCLN), GUI_T(KC_QUOT),
-  KC_LSFT,         CTL_T(KC_Z), KC_X,          KC_C,    KC_V,    KC_B,    ALL_T(KC_NO),                  MEH_T(KC_NO), KC_N,    KC_M,    KC_COMM, KC_DOT,           CTL_T(KC_SLSH), KC_RSFT,
-  LT(SYMB,KC_GRV), KC_QUOT,     LALT(KC_LSFT), KC_LEFT, KC_RGHT,                                              KC_UP,   KC_DOWN, KC_LBRC, KC_RBRC, TT(SYMB),
-                                                           ALT_T(KC_APP), KC_LGUI,                KC_LALT, CTL_T(KC_ESC),
-                                                                          KC_HOME,                 KC_PGUP,
-                                                         KC_SPC, KC_BSPC, KC_END,                  KC_PGDN, KC_TAB, KC_ENT
+  KC_ESC,   KC_1,        KC_2,          KC_3,    KC_4,    KC_5,    LSFT(KC_6),             KC_EQUAL,       KC_6,    KC_7,    KC_8,    KC_9,              KC_0,           LSFT(KC_SLASH),
+  KC_TAB,   KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    KC_SLASH,               KC_ESCAPE,      KC_Y,    KC_U,    KC_I,    KC_O,              KC_P,           LSFT(KC_1),
+  KC_LCTRL, KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                                            KC_H,    KC_J,    KC_K,    KC_L,              MO(1),      LSFT(KC_SCOLON),
+  KC_LSFT,  KC_Z,        KC_X,          KC_C,    KC_V,    KC_B,    MO(3),                  LSFT(KC_MINUS), KC_N,    KC_M,   KC_COMMA, KC_DOT,         KC_MINUS,     KC_RSHIFT,
+  SH_MON, LSFT(KC_COMMA), LSFT(KC_DOT),  LSFT(KC_GRAVE), KC_LALT,                                                   MO(1),   KC_SCOLON, KC_LBRC, KC_RBRACKET,       SH_MON,
+                                                           bs_multi, MO(2),                KC_LGUI,   KC_RALT,
+                                                                     OSL(3),               KC_RCTRL,
+                                               MO(1), KC_BSPACE, KC_DELETE,                MO(2),  KC_ENTER, KC_SPACE
 ),
 /* Keymap 1: Symbol Layer
  *
@@ -92,14 +136,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [SYMB] = LAYOUT_ergodox_pretty(
   // left hand
-  VRSN,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_TRNS,     KC_TRNS, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
-  KC_TRNS, KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE, KC_TRNS,     KC_TRNS, KC_UP,   KC_7,    KC_8,    KC_9,    KC_ASTR, KC_F12,
-  KC_TRNS, KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_GRV,               KC_DOWN, KC_4,    KC_5,    KC_6,    KC_PLUS, KC_TRNS,
-  KC_TRNS, KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_TILD, KC_TRNS,     KC_TRNS, KC_AMPR, KC_1,    KC_2,    KC_3,    KC_BSLS, KC_TRNS,
-  EEP_RST, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_DOT,  KC_0,    KC_EQL,  KC_TRNS,
-                                               RGB_MOD, KC_TRNS,     RGB_TOG, RGB_M_P,
+  DF(0),  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_TRNS,     KC_TRNS, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_INSERT,
+  KC_TRNS, KC_AT,   KC_AMPR, KC_PLUS, KC_DQUO, KC_QUOTE, KC_BSLS,     KC_TRNS, KC_PLUS, KC_PGUP, KC_HOME, KC_END,  KC_TRNS, KC_BSPACE,
+  KC_TRNS, KC_ASTR, KC_DLR,  KC_LPRN, KC_RPRN,  KC_TRNS,                       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_PLUS, KC_TRNS,
+  KC_TRNS, KC_LCBR, KC_RCBR, KC_HASH, KC_PERC, KC_PIPE, KC_TRNS,      KC_TRNS, KC_TRNS, KC_PGDN,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                         KC_TRNS, KC_TRNS,  KC_TRNS,  KC_TRNS,  KC_TRNS,
+                                               KC_TRNS, KC_F11,      KC_F12, KC_TRNS,
                                                         KC_TRNS,     KC_TRNS,
-                                      RGB_VAD, RGB_VAI, KC_TRNS,     KC_TRNS, RGB_HUD, RGB_HUI
+                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
 ),
 /* Keymap 2: Media and mouse keys
  *
@@ -124,15 +168,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [MDIA] = LAYOUT_ergodox_pretty(
   // left hand
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,                       KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_MPLY,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS, KC_MPRV, KC_MNXT, KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,                                         KC_VOLU, KC_VOLD, KC_MUTE, KC_TRNS, KC_TRNS,
+  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_NUMLOCK, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_KP_MINUS, KC_TRNS,
+  KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,   KC_PSCREEN, KC_TRNS, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_PLUS, KC_BSPACE,
+  KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,                       KC_TRNS, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_PLUS, KC_DELETE,
+  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_KP_1, KC_KP_2, KC_KP_3, KC_KP_ENTER, KC_TRNS,
+  KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,                                         KC_KP_0, KC_KP_0, KC_KP_DOT, KC_KP_ENTER, KC_TRNS,
 
                                                KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
                                                         KC_TRNS,     KC_TRNS,
-                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_WBAK
+                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
+),
+
+
+// Special / Macros
+[SPECIAL] = LAYOUT_ergodox_pretty(
+  // left hand
+  EMOT_think, EMOT_rofl1, EMOT_rofl2, EMOT_sung, EMOT_tongue, EMOT_eyes, EMOT_love,    lc_all_c, bash_devnull1, bash_devnull2, bash_devnull12, KC_TRNS, KC_TRNS, KC_TRNS,
+  EMOT_monkm, EMOT_monke, EMOT_fire, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, signature_niceday, signature_name, signature_email, signature_thankyou, signature_thx_support, website_elivecd,
+  KC_TRNS, gui_selectline, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,                       arrowLm, arrowDm, arrowUm, arrowRm, KC_TRNS, KC_TRNS,
+  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, donation_thx_important, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, website_64bit_download,
+  RESET, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,                                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+
+                                               KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
+                                                        KC_TRNS,     KC_TRNS,
+                                      KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_TRNS
 ),
 };
 
@@ -141,7 +200,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
      switch (keycode) {
         case VRSN:
            SEND_STRING(QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
-           return false;
+           return true;
            break;
         case EPRM:
            if (record->event.pressed) {
@@ -150,52 +209,227 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            return false;
            break;
 
-        case SHELL_LSB:
+        // emoticons
+        case EMOT_think:
            if (record->event.pressed) {
-                /*SEND_STRING("lsb\n");*/
-                send_unicode_string("(ノಠ痊ಠ)ノ彡┻━┻ 🔥");
+                send_unicode_string("🤔");
            }
+           return true;
+           break;
+        case EMOT_eyes:
+           if (record->event.pressed) {
+                send_unicode_string("🙄");
+           }
+           return true;
+           break;
+        case EMOT_tongue:
+           if (record->event.pressed) {
+                send_unicode_string("😝");
+           }
+           return true;
+           break;
+        case EMOT_monkm:
+           if (record->event.pressed) {
+                send_unicode_string("🙊");
+           }
+           return true;
+           break;
+        case EMOT_monke:
+           if (record->event.pressed) {
+                send_unicode_string("🙈");
+           }
+           return true;
+           break;
+        case EMOT_rofl1:
+           if (record->event.pressed) {
+                send_unicode_string("😂");
+           }
+           return true;
+           break;
+        case EMOT_rofl2:
+           if (record->event.pressed) {
+                send_unicode_string("🤣");
+           }
+           return true;
+           break;
+        case EMOT_sung:
+           if (record->event.pressed) {
+                send_unicode_string("😎");
+           }
+           return true;
+           break;
+        case EMOT_love:
+           if (record->event.pressed) {
+                send_unicode_string("❤");
+           }
+           return true;
+           break;
+        case EMOT_fire:
+           if (record->event.pressed) {
+                send_unicode_string("🔥");
+           }
+           return true;
+           break;
+        case bs_multi:
+           if (record->event.pressed) {
+                for (int i = 0; i < repeat_amount; i++) {
+                     /*SEND_STRING(SS_TAP(X_BSPACE) SS_TAP(X_BSPACE) SS_TAP(X_BSPACE) SS_TAP(X_BSPACE) SS_TAP(X_BSPACE));*/
+                     SEND_STRING(SS_TAP(X_BSPACE));
+                }
+           }
+           return true;
+           break;
+        case lc_all_c:
+           if (record->event.pressed) {
+                SEND_STRING("LC_ALL=C");
+           }
+
+           return true;
+           break;
+        case bash_devnull1:
+           if (record->event.pressed) {
+                SEND_STRING("1>/dev/null");
+           }
+           return true;
+           break;
+        case bash_devnull2:
+           if (record->event.pressed) {
+                SEND_STRING("2>/dev/null");
+           }
+           return true;
+           break;
+        case bash_devnull12:
+           if (record->event.pressed) {
+                SEND_STRING("1>/dev/null 2>&1");
+           }
+           return true;
+           break;
+         case signature_niceday:
+           if (record->event.pressed) {
+                SEND_STRING("Thank you and have a beautiful day,\n");
+           }
+           return true;
+           break;
+         case donation_thx_important:
+           if (record->event.pressed) {
+                SEND_STRING("First thanks a lot for your donation, it is very important for the survival and progress of the project\n");
+           }
+           return true;
+           break;
+         case signature_name:
+           if (record->event.pressed) {
+                SEND_STRING("Thanatermesis");
+           }
+           return true;
+           break;
+         case signature_email:
+           if (record->event.pressed) {
+                SEND_STRING("thanatermesis@gmail.com");
+           }
+           return true;
+           break;
+         case signature_thankyou:
+           if (record->event.pressed) {
+                SEND_STRING("Thank you,\n");
+           }
+           return true;
+           break;
+         case signature_thx_support:
+           if (record->event.pressed) {
+                SEND_STRING("Thank you a lot for your support and have a beautiful day,\n");
+           }
+           return true;
+           break;
+         case website_elivecd:
+           if (record->event.pressed) {
+                SEND_STRING("https://www.elivecd.org");
+           }
+           return true;
+           break;
+         case website_64bit_download:
+           if (record->event.pressed) {
+                SEND_STRING("https://www.elivecd.org/donation/download-beta-gathjucsan/");
+           }
+           return true;
+           break;
+         case gui_selectline:
+           if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_HOME) SS_DOWN(X_LSHIFT) SS_TAP(X_END) SS_UP(X_LSHIFT ));
+           }
+           return true;
+           break;
+         case arrowLm:
+           if (record->event.pressed) {
+                for (int i = 0; i < repeat_amount; i++) {
+                     SEND_STRING(SS_TAP(X_LEFT));
+                }
+           }
+           return true;
+           break;
+         case arrowRm:
+           if (record->event.pressed) {
+                for (int i = 0; i < repeat_amount; i++) {
+                     SEND_STRING(SS_TAP(X_RIGHT));
+                }
+           }
+           return true;
+           break;
+         case arrowUm:
+           if (record->event.pressed) {
+                for (int i = 0; i < repeat_amount; i++) {
+                     SEND_STRING(SS_TAP(X_UP));
+                }
+           }
+           return true;
+           break;
+         case arrowDm:
+           if (record->event.pressed) {
+                for (int i = 0; i < repeat_amount; i++) {
+                     SEND_STRING(SS_TAP(X_DOWN));
+                }
+           }
+           return true;
            break;
 
-        case SHELL_LS:
-           if (record->event.pressed) {
-                /*send_unicode_string("(ノಠ痊ಠ)ノ彡┻━┻ 🔥");*/
-                send_unicode_string("🐄");
-                wait_ms(200);
-                send_unicode_string("🐄");
-                wait_ms(200);
-                SEND_STRING("   ");
-           }
-
+         default:
+           return true;
+           break;
      }
-    return true;
 }
+
+
+// Tap Dance definitions.
+// Update: not working due to Vial mode?
+/*qk_tap_dance_action_t tap_dance_actions[] = {*/
+    /*// Tap once for Escape, twice for Caps Lock*/
+    /*[TD_LSHIFT] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),*/
+    /*[TD_RSHIFT] = ACTION_TAP_DANCE_DOUBLE(KC_RSHIFT, KC_CAPS),*/
+/*};*/
+
+
 
 // Runs just one time when the keyboard initializes.
 void keyboard_post_init_user(void) {
-     ergodox_blink_all_leds();
-     ergodox_blink_all_leds();
-     ergodox_blink_all_leds();
 };
 
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void) {
     // make the led status compatible with shift and numlock
     led_t led_state = host_keyboard_led_state();
+    /*
     if(led_state.caps_lock) {
         ergodox_right_led_1_on();
     } else {
-        uint8_t layer = get_highest_layer(layer_state);
-        // TODO define which layer will use this light
-        if(layer != 1) {
+        //uint8_t layer = get_highest_layer(layer_state);
+        //if(layer != 1) {
              ergodox_right_led_1_off();
-        }
+        //}
     }
+    */
     if(led_state.num_lock) {
         ergodox_right_led_2_on();
     } else {
         uint8_t layer = get_highest_layer(layer_state);
-        // TODO define which layer will use this light
         if(layer != 2) {
              ergodox_right_led_2_off();
         }
@@ -216,13 +450,15 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         case 0:
             break;
         case 1:
-            ergodox_right_led_1_on();
+            //ergodox_right_led_1_on();
             break;
         case 2:
             ergodox_right_led_2_on();
+            ergodox_right_led_2_set(LED_BRIGHTNESS_MED1);
             break;
         case 3:
-            ergodox_right_led_3_on();
+            /*ergodox_right_led_3_on();*/
+            ergodox_right_led_1_on();
             break;
         case 4:
             ergodox_right_led_1_on();

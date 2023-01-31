@@ -5,7 +5,7 @@ VIAL_ENABLE = yes
 
 # reduce firmware size:
 LTO_ENABLE = no
-# Note: better to enable them from the shell:
+# Note: better to enable them from the shell, it works BETTER having only it:
 # export CFLAGS="-fvisibility=hidden -ffunction-sections -fdata-sections -ffast-math -flto -Os" ; export CXXFLAGS="-Wshadow -ffunction-sections -fdata-sections -ffast-math -flto -Os" ; export LDFLAGS="-fvisibility=hidden -fdata-sections -Wl,--as-needed -Wl,--gc-sections -Wl,-O1 -flto -Wl,-z,defs"
 
 # Build Options
@@ -20,7 +20,8 @@ SLEEP_LED_ENABLE = no       # Breathing sleep LED during USB suspend
 SEND_STRING_ENABLE = yes     # The Send String API is part of QMK’s macro system. It allows for sequences of keystrokes to be sent automatically. The full ASCII character set is supported, along with all of the keycodes in the Basic Keycode range (as these are the only ones that will actually be sent to the host). Unicode characters are not supported with this API – see the Unicode feature instead.
 
 #DEBOUNCE_TYPE = sym_eager_pr # default ergodox ez
-DEBOUNCE_TYPE = sym_defer_g # This is the current default algorithm. This is the highest performance algorithm with lowest memory usage, and it’s also noise-resistant.
+# TODO: issues with keys pessed in different times?
+#DEBOUNCE_TYPE = sym_defer_g # This is the current default algorithm. This is the highest performance algorithm with lowest memory usage, and it’s also noise-resistant.
 
 SWAP_HANDS_ENABLE= yes # Allow swapping hands of keyboard
 
@@ -28,7 +29,7 @@ SWAP_HANDS_ENABLE= yes # Allow swapping hands of keyboard
 TAP_DANCE_ENABLE = yes      # 1-2 kb. Hit the semicolon key once, send a semicolon. Hit it twice, rapidly – send a colon. Hit it three times, and your keyboard’s LEDs do a wild dance.
 
 ## these uses quite more space
-LEADER_ENABLE = yes         # Combine a sequence of keys (like: ,a) fast to produce a special sending
+LEADER_ENABLE = no         # Combine a sequence of keys (like: ,a) fast to produce a special sending
 #UNICODE_ENABLE   = yes      # The easiest to use method, albeit somewhat limited. It stores Unicode characters as keycodes in the keymap itself, so it only supports code points up to 0x7FFF. This covers characters for most modern languages (including East Asian), as well as symbols, but it doesn’t cover emoji. For example, UC(0x40B) will output Ћ, and UC(0x30C4) will output ツ.
 UNICODEMAP_ENABLE = yes
 #UNICODEMAP_ENABLE = no      # In addition to standard character ranges, this method also covers emoji, ancient scripts, rare symbols etc. In fact, all possible code points (up to 0x10FFFF) are supported. Here, Unicode characters are stored in a separate mapping table. You need to maintain a unicode_map array in your keymap file, which may contain at most 16384 entries.
