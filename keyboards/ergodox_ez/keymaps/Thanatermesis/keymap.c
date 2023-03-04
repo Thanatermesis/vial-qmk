@@ -205,8 +205,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
+// backport this needed macro from updated QMK code
+#define QK_MOMENTARY_GET_LAYER(kc) ((kc)&0x1F)
+
+uint8_t layer_keys_pressed[SPECIAL] = {0}; // macro to know the amount of keys pressed for MO layer switching
+uint8_t layer = 0; // layer number
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
      switch (keycode) {
+        case QK_MOMENTARY...QK_MOMENTARY_MAX: // any MO key
+           layer = QK_MOMENTARY_GET_LAYER(keycode); // check which layer this MO affects
+
+           // increase / decrease the amount of keys pressed to set a layer
+           if (record->event.pressed) layer_keys_pressed[layer]++;
+           else layer_keys_pressed[layer]--;
+
+           // turn the layer on/off
+           if (layer_keys_pressed[layer]) layer_on(layer);
+           else layer_off(layer); // deactivate layer only if there's no more remainig keys pressed
+
+           return false;
         case VRSN:
            SEND_STRING(QMK_KEYBOARD "/" QMK_KEYMAP " @ " QMK_VERSION);
            return true;
