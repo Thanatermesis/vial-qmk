@@ -25,6 +25,13 @@ enum custom_keycodes {
     EMOT_sung,
     EMOT_fire,
     EMOT_love,
+    utf_a,
+    utf_e,
+    utf_i,
+    utf_o,
+    utf_u,
+    utf_n,
+    utf_c,
     bs_multi,
     lc_all_c,
     bash_devnull1,
@@ -53,7 +60,9 @@ enum {
 };
 */
 
-int repeat_amount = 5;
+int repeat_amount_small = 3;
+int repeat_amount_big = 8;
+/*int mo_keys_pressed = 0*/
 
 // needed to enable utf8/unicode, even if not used
 const uint32_t PROGMEM unicode_map[] = {
@@ -105,8 +114,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [BASE] = LAYOUT_ergodox_pretty(
   // left hand
   KC_ESC,   KC_1,        KC_2,          KC_3,    KC_4,    KC_5,    LSFT(KC_6),             KC_EQUAL,       KC_6,    KC_7,    KC_8,    KC_9,              KC_0,           LSFT(KC_SLASH),
-  KC_TAB,   KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    KC_SLASH,               KC_ESCAPE,      KC_Y,    KC_U,    KC_I,    KC_O,              KC_P,           LSFT(KC_1),
-  KC_LCTRL, KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                                            KC_H,    KC_J,    KC_K,    KC_L,              MO(1),      LSFT(KC_SCOLON),
+  KC_TAB,   KC_Q,        KC_W,          KC_E,    KC_R,    KC_T,    KC_PIPE,               LSFT(KC_SCOLON),  KC_Y,    KC_U,    KC_I,    KC_O,              KC_P,           LSFT(KC_1),
+  KC_LCTRL, KC_A,        KC_S,          KC_D,    KC_F,    KC_G,                                            KC_H,    KC_J,    KC_K,    KC_L,              KC_SLASH,      MO(3),
   KC_LSFT,  KC_Z,        KC_X,          KC_C,    KC_V,    KC_B,    MO(3),                  LSFT(KC_MINUS), KC_N,    KC_M,   KC_COMMA, KC_DOT,         KC_MINUS,     KC_RSHIFT,
   SH_MON, LSFT(KC_COMMA), LSFT(KC_DOT),  LSFT(KC_GRAVE), KC_LALT,                                                   MO(1),   KC_SCOLON, KC_LBRC, KC_RBRACKET,       SH_MON,
                                                            bs_multi, MO(2),                KC_LGUI,   KC_RALT,
@@ -136,7 +145,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [SYMB] = LAYOUT_ergodox_pretty(
   // left hand
-  DF(0),  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_TRNS,     KC_TRNS, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_INSERT,
+  DF(0),  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_GRAVE,     KC_TRNS, KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_INSERT,
   KC_TRNS, KC_AT,   KC_AMPR, KC_PLUS, KC_DQUO, KC_QUOTE, KC_BSLS,     KC_TRNS, KC_PLUS, KC_PGUP, KC_HOME, KC_END,  KC_TRNS, KC_BSPACE,
   KC_TRNS, KC_ASTR, KC_DLR,  KC_LPRN, KC_RPRN,  KC_TRNS,                       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_PLUS, KC_TRNS,
   KC_TRNS, KC_LCBR, KC_RCBR, KC_HASH, KC_PERC, KC_PIPE, KC_TRNS,      KC_TRNS, KC_TRNS, KC_PGDN,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
@@ -171,7 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_NUMLOCK, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_KP_MINUS, KC_TRNS,
   KC_TRNS, KC_TRNS, KC_TRNS, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,   KC_PSCREEN, KC_TRNS, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_PLUS, KC_BSPACE,
   KC_TRNS, KC_TRNS, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,                       KC_TRNS, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_PLUS, KC_DELETE,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_KP_1, KC_KP_2, KC_KP_3, KC_KP_ENTER, KC_TRNS,
+  KC_TRNS, KC_TRNS, MK_CUT,  MK_COPY, MK_PASTE, KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS, KC_KP_1, KC_KP_2, KC_KP_3, KC_KP_ENTER, KC_TRNS,
   KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,                                         KC_KP_0, KC_KP_0, KC_KP_DOT, KC_KP_ENTER, KC_TRNS,
 
                                                KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
@@ -183,11 +192,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Special / Macros
 [SPECIAL] = LAYOUT_ergodox_pretty(
   // left hand
-  EMOT_think, EMOT_rofl1, EMOT_rofl2, EMOT_sung, EMOT_tongue, EMOT_eyes, EMOT_love,    lc_all_c, bash_devnull1, bash_devnull2, bash_devnull12, KC_TRNS, KC_TRNS, KC_TRNS,
-  EMOT_monkm, EMOT_monke, EMOT_fire, KC_MS_U, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, signature_niceday, signature_name, signature_email, signature_thankyou, signature_thx_support, website_elivecd,
-  KC_TRNS, gui_selectline, KC_MS_L, KC_MS_D, KC_MS_R, KC_TRNS,                       arrowLm, arrowDm, arrowUm, arrowRm, KC_TRNS, KC_TRNS,
-  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     KC_TRNS, donation_thx_important, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, website_64bit_download,
-  RESET, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,                                         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+  EMOT_think, EMOT_rofl1, EMOT_rofl2, EMOT_sung, EMOT_tongue, EMOT_eyes, EMOT_love,   lc_all_c, bash_devnull1, bash_devnull2, bash_devnull12, KC_TRNS, KC_TRNS, KC_TRNS,
+  EMOT_monkm, EMOT_monke, EMOT_fire, utf_e, KC_TRNS, KC_TRNS, KC_TRNS,                signature_niceday, signature_email, utf_u, utf_i, utf_o, signature_thankyou, signature_thx_support,
+  KC_TRNS, utf_a, gui_selectline, KC_TRNS, KC_TRNS, KC_TRNS,                                 arrowLm, arrowDm, arrowUm, arrowRm, KC_TRNS, KC_TRNS,
+  KC_TRNS, KC_TRNS, KC_TRNS, utf_c, KC_TRNS, KC_TRNS, KC_TRNS,                        signature_name, utf_n, donation_thx_important, KC_TRNS, KC_TRNS, website_elivecd, website_64bit_download,
+  RESET, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                                          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 
                                                KC_TRNS, KC_TRNS,     KC_TRNS, KC_TRNS,
                                                         KC_TRNS,     KC_TRNS,
@@ -207,6 +216,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 eeconfig_init();
            }
            return false;
+           break;
+        // spanish keyboard keys:
+        case utf_a:
+           if (record->event.pressed) { send_unicode_string("á"); }
+           return true;
+           break;
+        case utf_e:
+           if (record->event.pressed) { send_unicode_string("é"); }
+           return true;
+           break;
+        case utf_i:
+           if (record->event.pressed) { send_unicode_string("í"); }
+           return true;
+           break;
+        case utf_o:
+           if (record->event.pressed) { send_unicode_string("ó"); }
+           return true;
+           break;
+        case utf_u:
+           if (record->event.pressed) { send_unicode_string("ú"); }
+           return true;
+           break;
+        case utf_n:
+           if (record->event.pressed) { send_unicode_string("ñ"); }
+           return true;
+           break;
+        case utf_c:
+           if (record->event.pressed) { send_unicode_string("ç"); }
+           return true;
            break;
 
         // emoticons
@@ -272,7 +310,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            break;
         case bs_multi:
            if (record->event.pressed) {
-                for (int i = 0; i < repeat_amount; i++) {
+                for (int i = 0; i < repeat_amount_big; i++) {
                      /*SEND_STRING(SS_TAP(X_BSPACE) SS_TAP(X_BSPACE) SS_TAP(X_BSPACE) SS_TAP(X_BSPACE) SS_TAP(X_BSPACE));*/
                      SEND_STRING(SS_TAP(X_BSPACE));
                 }
@@ -360,7 +398,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            break;
          case arrowLm:
            if (record->event.pressed) {
-                for (int i = 0; i < repeat_amount; i++) {
+                for (int i = 0; i < repeat_amount_big; i++) {
                      SEND_STRING(SS_TAP(X_LEFT));
                 }
            }
@@ -368,7 +406,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            break;
          case arrowRm:
            if (record->event.pressed) {
-                for (int i = 0; i < repeat_amount; i++) {
+                for (int i = 0; i < repeat_amount_big; i++) {
                      SEND_STRING(SS_TAP(X_RIGHT));
                 }
            }
@@ -376,7 +414,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            break;
          case arrowUm:
            if (record->event.pressed) {
-                for (int i = 0; i < repeat_amount; i++) {
+                for (int i = 0; i < repeat_amount_small; i++) {
                      SEND_STRING(SS_TAP(X_UP));
                 }
            }
@@ -384,7 +422,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            break;
          case arrowDm:
            if (record->event.pressed) {
-                for (int i = 0; i < repeat_amount; i++) {
+                for (int i = 0; i < repeat_amount_small; i++) {
                      SEND_STRING(SS_TAP(X_DOWN));
                 }
            }
